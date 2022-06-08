@@ -43,7 +43,7 @@ void print_matrix(Matrix matrix);                                //ok
 //>================= manipulacao de dimensoes: ================= REVER
 
 Matrix transpose(Matrix matrix);                                 //ok                                
-Matrix reshape(Matrix matrix, int new_n_rows, int new_n_cols);    
+Matrix reshape(Matrix matrix, int new_n_rows, int new_n_cols);   //quase  
 Matrix slice(Matrix a_matrix, int rs, int re, int cs, int ce);    
 
 //>======================== agregacao: ========================= REVER

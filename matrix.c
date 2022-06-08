@@ -152,7 +152,7 @@ void print_matrix(Matrix matrix){
 //>================= manipulacao de dimensoes: =================
 
 /*
-    Retorna a matrix transposta da matriz.
+    Retorna a matriz transposta da matriz.
 */
 Matrix transpose(Matrix matrix){
     Matrix transposed = {matrix.data, matrix.n_cols, matrix.n_rows, matrix.stride_cols, matrix.stride_rows, matrix.offset};
@@ -168,11 +168,12 @@ Matrix transpose(Matrix matrix){
 Matrix reshape(Matrix matrix, int new_n_rows, int new_n_cols){
    if (matrix.n_cols*matrix.n_rows != new_n_rows*new_n_cols){
         puts("in reshape: ");
-        printf("Error: cannot reshape matrix of %d elements into shape (%d, %d)\n", matrix.n_cols*matrix.n_rows, new_n_rows, new_n_cols);
+        printf("Error: cannot reshape matrix of size %d into shape (%d, %d)\n", matrix.n_cols*matrix.n_rows, new_n_rows, new_n_cols);
         exit(1);
     }
-
-    return create_matrix(matrix.data, new_n_rows, new_n_cols);
+ 
+    Matrix reshaped = {matrix.data, new_n_rows, new_n_cols, new_n_cols, matrix.stride_cols, matrix.offset};
+    return reshaped;
 }
 
 /*

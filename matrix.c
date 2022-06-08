@@ -149,11 +149,15 @@ void put_element(Matrix matrix, int ri, int ci, int elem){
 */
 void print_matrix(Matrix matrix){
     int i = matrix.offset;
-    for (int row = 0; row < matrix.n_rows; row++){
+
+    for (int rows_counter = 0; rows_counter < matrix.n_rows; rows_counter++){
         printf("( ");
-        for (int col = 0; col < matrix.n_cols; col++)
-            printf("%2d ", matrix.data[i++]);
-        printf(")\n");
+        for (int cols_counter = 0; cols_counter < matrix.n_cols; cols_counter++){
+            printf("%2d ", matrix.data[i]);
+            i += cols_counter;
+        }
+        i += matrix.stride_rows;
+    printf(")\n");
     }
 }
 

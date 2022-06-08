@@ -148,15 +148,13 @@ void put_element(Matrix matrix, int ri, int ci, int elem){
     Exibe os dados da matriz em seu formato.
 */
 void print_matrix(Matrix matrix){
-    int i = matrix.offset;
-
-    for (int rows_counter = 0; rows_counter < matrix.n_rows; rows_counter++){
+    int i=0;
+    for (int row_index = 0; row_index < matrix.n_rows; row_index++){
         printf("( ");
-        for (int cols_counter = 0; cols_counter < matrix.n_cols; cols_counter++){
+        for (int col_index = 0; col_index < matrix.n_cols; col_index++){        
+            i = matrix.offset + row_index*matrix.stride_rows + col_index*matrix.stride_cols;
             printf("%2d ", matrix.data[i]);
-            i += cols_counter;
         }
-        i += matrix.stride_rows;
     printf(")\n");
     }
 }

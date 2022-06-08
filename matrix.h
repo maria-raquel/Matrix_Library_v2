@@ -26,13 +26,13 @@ typedef struct {
 
 //>================== Assinaturas de Funcoes: ==================
 
-//>==================== criacao de matrizes: =================== OK
+//>==================== criacao de matrizes: =================== TODAS OK
 
 Matrix create_matrix(int *data, int n_rows, int n_cols);          
 Matrix zeros_matrix(int n_rows, int n_cols);                      
 Matrix full_matrix(int n_rows, int n_cols, int value);            
 Matrix i_matrix(int n);              
-Matrix tile_matrix(Matrix matrix, int reps);                      
+Matrix tile_matrix(Matrix matrix, int reps);      //-----> rever tile                  
 
 //>==================== acessar elementos: ===================== REVER     
 

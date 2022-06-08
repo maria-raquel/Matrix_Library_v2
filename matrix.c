@@ -155,22 +155,8 @@ void print_matrix(Matrix matrix){
     Retorna a matrix transposta da matriz.
 */
 Matrix transpose(Matrix matrix){
-    int *data = malloc((matrix.n_cols)*(matrix.n_rows)*sizeof(int)); 
-
-    int cols_counter = 1, cols_resetter = 0;
-
-    for (int i = 0, j = 0; i < matrix.n_cols*matrix.n_rows; i++){
-        data[i] = matrix.data[j];
-        j += matrix.stride_rows;
-        cols_counter++;
-        if (cols_counter > matrix.n_rows){
-            cols_counter = 1;
-            cols_resetter++;
-            j = cols_resetter;
-        }
-    }
-
-    return create_matrix(data, matrix.n_cols, matrix.n_rows);
+    Matrix transposed = {matrix.data, matrix.n_cols, matrix.n_rows, matrix.stride_cols, matrix.stride_rows, matrix.offset};
+    return transposed;
 }
 
 /*

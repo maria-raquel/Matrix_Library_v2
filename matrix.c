@@ -45,14 +45,12 @@ Matrix zeros_matrix(int n_rows, int n_cols){
     > value: valor dos elementos da matriz
 */
 Matrix full_matrix(int n_rows, int n_cols, int value){
-    int *data;
-    data = malloc(n_rows*n_cols*sizeof(int));
+    int *data = malloc(n_rows*n_cols*sizeof(int));
 
     for (int i=0; i < n_rows*n_cols;)
         *(data+i++) = value;
 
-    Matrix m = create_matrix(data, n_rows, n_cols);
-    return m;
+    return create_matrix(data, n_rows, n_cols);
 }
 
 /*
@@ -60,8 +58,7 @@ Matrix full_matrix(int n_rows, int n_cols, int value){
     > n: valor das dimensoes (nxn) da matriz
 */
 Matrix i_matrix(int n){
-    int *data;
-    data = malloc(n*n*sizeof(int));
+    int *data = malloc(n*n*sizeof(int));
 
     for (int i=0; i < n*n;)
         *(data+i++) = 0;
@@ -83,17 +80,13 @@ Matrix i_matrix(int n){
     > reps: quantidade de repetições
 */
 Matrix tile_matrix(Matrix matrix, int reps){
-    int *data, k = 0;
-    data = malloc(matrix.n_cols*matrix.n_rows*sizeof(int)*reps);
+    int *data = malloc(matrix.n_cols*matrix.n_rows*sizeof(int)*reps), k = 0;
 
-    for (int l = 1; l < matrix.n_rows+1; l++){
-        for (int j = 0; j < reps; j++){
-            for (int i = 0 + (l-1)*matrix.stride_rows; i < matrix.stride_rows + (l-1)*matrix.stride_rows; i++){
-                *(data + k) = matrix.data[i];
-                k++;
-            }
-        }
-    }
+    for (int l = 1; l < matrix.n_rows+1; l++)
+        for (int j = 0; j < reps; j++)
+            for (int i = 0 + (l-1)*matrix.stride_rows; i < matrix.stride_rows + (l-1)*matrix.stride_rows; i++)
+                *(data + k++) = matrix.data[i];
+        
     return create_matrix(data, matrix.n_rows, matrix.n_cols*reps);
 }
 
@@ -148,13 +141,10 @@ void put_element(Matrix matrix, int ri, int ci, int elem){
     Exibe os dados da matriz em seu formato.
 */
 void print_matrix(Matrix matrix){
-    int i=0;
     for (int row_index = 0; row_index < matrix.n_rows; row_index++){
         printf("( ");
-        for (int col_index = 0; col_index < matrix.n_cols; col_index++){        
-            i = matrix.offset + row_index*matrix.stride_rows + col_index*matrix.stride_cols;
-            printf("%2d ", matrix.data[i]);
-        }
+        for (int col_index = 0; col_index < matrix.n_cols; col_index++)
+            printf("%2d ", matrix.data[matrix.offset + row_index*matrix.stride_rows + col_index*matrix.stride_cols]);
     printf(")\n");
     }
 }

@@ -38,7 +38,7 @@ Matrix tile_matrix(Matrix matrix, int reps);
 
 int get_element(Matrix matrix, int ri, int ci);                   
 void put_element(Matrix matrix, int ri, int ci, int elem);        
-void print_matrix(Matrix matrix);                                 
+void print_matrix(Matrix matrix);                                //ok                           
 
 //>================= manipulacao de dimensoes: ================= REVER
 

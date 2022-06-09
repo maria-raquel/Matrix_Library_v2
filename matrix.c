@@ -116,19 +116,13 @@ int get_element(Matrix matrix, int ri, int ci){
     > elem: valor novo do elemento
 */
 void put_element(Matrix matrix, int ri, int ci, int elem){
-
-    if (ri >= matrix.n_rows || ci >= matrix.n_cols){
-        puts("in put_element: ");
+    if (ri<0 || ci<0 || ri >= matrix.n_rows || ci >= matrix.n_cols){
+        puts("in get_element: ");
         printf("Error: index [%d][%d] is out of bounds\n", ri, ci);
         exit(1);
     }
 
-    int i = matrix.offset;
-
-    for (int row=0; row<ri; i += matrix.stride_rows, row++){}
-    for (int col=0; col<ci; i += matrix.stride_cols, col++){}
-
-    matrix.data[i] = elem;
+    matrix.data[matrix.offset + ri*matrix.stride_rows + ci*matrix.stride_cols] = elem;
 }
 
 /*

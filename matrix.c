@@ -258,11 +258,11 @@ Matrix add(Matrix matrix_1, Matrix matrix_2){
         exit(1);
     }
 
-    int *data;
-    data = malloc(matrix_1.n_cols*matrix_1.n_rows*sizeof(int));
+    int *data = malloc(matrix_1.n_cols*matrix_1.n_rows*sizeof(int)), i=0;
 
-    for (int i = matrix_1.offset; i < matrix_1.n_cols*matrix_1.n_rows; i++)
-        *(data+i) = matrix_1.data[i] + matrix_2.data[i];
+    for (int row_index = 0; row_index < matrix_1.n_rows; row_index++)
+        for (int col_index = 0; col_index < matrix_1.n_cols; col_index++)
+            *(data+i++) = matrix_1.data[matrix_1.offset + row_index*matrix_1.stride_rows + col_index*matrix_1.stride_cols] + matrix_2.data[matrix_2.offset + row_index*matrix_2.stride_rows + col_index*matrix_2.stride_cols];
 
     return create_matrix(data, matrix_1.n_rows, matrix_1.n_cols);;
 }
@@ -279,11 +279,11 @@ Matrix sub(Matrix matrix_1, Matrix matrix_2){
         exit(1);
     }
 
-    int *data;
-    data = malloc(matrix_1.n_cols*matrix_1.n_rows*sizeof(int));
+    int *data = malloc(matrix_1.n_cols*matrix_1.n_rows*sizeof(int)), i=0;
 
-    for (int i=matrix_1.offset; i < matrix_1.n_cols*matrix_1.n_rows; i++)
-        *(data+i) = matrix_1.data[i] - matrix_2.data[i];
+    for (int row_index = 0; row_index < matrix_1.n_rows; row_index++)
+        for (int col_index = 0; col_index < matrix_1.n_cols; col_index++)
+            *(data+i++) = matrix_1.data[matrix_1.offset + row_index*matrix_1.stride_rows + col_index*matrix_1.stride_cols] - matrix_2.data[matrix_2.offset + row_index*matrix_2.stride_rows + col_index*matrix_2.stride_cols];
 
     return create_matrix(data, matrix_1.n_rows, matrix_1.n_cols);
 }
@@ -301,9 +301,7 @@ Matrix division(Matrix matrix_1, Matrix matrix_2){
         exit(1);
     }
 
-    int size = matrix_1.n_cols*matrix_1.n_rows;
-
-    for (int i = 0; i<size; i++){
+    for (int i = 0; i < matrix_1.n_cols*matrix_1.n_rows; i++){
         if (matrix_2.data[i] == 0){
             puts("in division: ");
             printf("Error: cannot divide by 0\n");
@@ -311,11 +309,12 @@ Matrix division(Matrix matrix_1, Matrix matrix_2){
         }
     }
 
-    int *data;
-    data = malloc(size*sizeof(int));
+    int *data = malloc(matrix_1.n_cols*matrix_1.n_rows*sizeof(int)), i=0;
 
-    for (int i = matrix_1.offset; i < matrix_1.n_cols*matrix_1.n_rows; i++)
-        *(data+i) = matrix_1.data[i] / matrix_2.data[i];
+    for (int row_index = 0; row_index < matrix_1.n_rows; row_index++)
+        for (int col_index = 0; col_index < matrix_1.n_cols; col_index++)
+            *(data+i++) = matrix_1.data[matrix_1.offset + row_index*matrix_1.stride_rows + col_index*matrix_1.stride_cols] / matrix_2.data[matrix_2.offset + row_index*matrix_2.stride_rows + col_index*matrix_2.stride_cols];
+
 
     return create_matrix(data, matrix_1.n_rows, matrix_1.n_cols);
 }
@@ -330,11 +329,11 @@ Matrix mul(Matrix matrix_1, Matrix matrix_2){
         exit(1);
     }
 
-    int *data;
-    data = malloc(matrix_1.n_cols*matrix_1.n_rows*sizeof(int));
+    int *data = malloc(matrix_1.n_cols*matrix_1.n_rows*sizeof(int)), i=0;
 
-    for (int i=matrix_1.offset; i < matrix_1.n_cols*matrix_1.n_rows; i++)
-        *(data+i) = matrix_1.data[i] * matrix_2.data[i];
+    for (int row_index = 0; row_index < matrix_1.n_rows; row_index++)
+        for (int col_index = 0; col_index < matrix_1.n_cols; col_index++)
+            *(data+i++) = matrix_1.data[matrix_1.offset + row_index*matrix_1.stride_rows + col_index*matrix_1.stride_cols] * matrix_2.data[matrix_2.offset + row_index*matrix_2.stride_rows + col_index*matrix_2.stride_cols];
 
     return create_matrix(data, matrix_1.n_rows, matrix_1.n_cols);
 }

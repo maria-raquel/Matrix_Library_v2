@@ -52,14 +52,14 @@ void print_matrix(Matrix matrix);                                //ok
 
 Matrix transpose(Matrix matrix);                                 //ok                                
 Matrix reshape(Matrix matrix, int new_n_rows, int new_n_cols);   //quase  
-Matrix slice(Matrix a_matrix, int rs, int re, int cs, int ce);    
+Matrix slice(Matrix a_matrix, int rs, int re, int cs, int ce);   //ok 
 
 //>======================== agregacao: ========================= REVER
 
-int min(Matrix matrix);                                           
-int max(Matrix matrix);                                           
-int argmin(Matrix matrix);                                        
-int argmax(Matrix matrix);                                        
+int min(Matrix matrix);                                          //ok
+int max(Matrix matrix);                                          //ok 
+int argmin(Matrix matrix);                                       //ok   
+int argmax(Matrix matrix);                                       //ok  
 
 //>================== operacoes aritmeticas: =================== REVER
 

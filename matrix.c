@@ -184,17 +184,8 @@ Matrix reshape(Matrix matrix, int new_n_rows, int new_n_cols){
     > ce: indice da coluna final do recorte
 */
 Matrix slice(Matrix a_matrix, int rs, int re, int cs, int ce){
-    Matrix m;
-    int *data, new_n_cols = re-rs, new_n_rows = ce-cs;
-
-    data = malloc((new_n_cols)*(new_n_rows)*sizeof(int)); 
-
-    int i = 0;
-    for (int x = 0; x < new_n_cols; x++)
-        for (int y = 0; y < new_n_rows; y++)
-            data[i++] = a_matrix.data[((rs+(x))*a_matrix.stride_rows) + ((cs+(y)) * a_matrix.stride_cols)];
-    
-    return create_matrix(data, new_n_cols, new_n_rows);
+    Matrix sliced = {a_matrix.data, re-rs, ce-cs, a_matrix.stride_rows, a_matrix.stride_cols, a_matrix.offset+rs*a_matrix.stride_rows + cs*a_matrix.stride_cols};
+    return sliced;
 }
 
 //>======================== agregacao: =========================

@@ -202,9 +202,10 @@ Matrix slice(Matrix a_matrix, int rs, int re, int cs, int ce){
 int min(Matrix matrix){
     int min = matrix.data[matrix.offset];
 
-    for (int i = matrix.offset+1; i < matrix.n_cols*matrix.n_rows; i++)
-        if (matrix.data[i] < min)
-            min = matrix.data[i];
+    for (int row_index = 0; row_index < matrix.n_rows; row_index++)
+        for (int col_index = 0; col_index < matrix.n_cols; col_index++)
+            if (matrix.data[matrix.offset + row_index*matrix.stride_rows + col_index*matrix.stride_cols] < min)
+                min = matrix.data[matrix.offset + row_index*matrix.stride_rows + col_index*matrix.stride_cols];
 
     return min;
 }

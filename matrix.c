@@ -216,9 +216,10 @@ int min(Matrix matrix){
 int max(Matrix matrix){
     int max = matrix.data[matrix.offset];
 
-    for (int i = matrix.offset+1; i < matrix.n_cols*matrix.n_rows; i++)
-        if (matrix.data[i] > max)
-            max = matrix.data[i];
+    for (int row_index = 0; row_index < matrix.n_rows; row_index++)
+        for (int col_index = 0; col_index < matrix.n_cols; col_index++)
+            if (matrix.data[matrix.offset + row_index*matrix.stride_rows + col_index*matrix.stride_cols] > max)
+                max = matrix.data[matrix.offset + row_index*matrix.stride_rows + col_index*matrix.stride_cols];
 
     return max;
 }
@@ -228,16 +229,16 @@ int max(Matrix matrix){
     (O indice do elemento no array unidimencional que armazena os dados da matriz).
 */
 int argmin(Matrix matrix){
-    int index_min = matrix.offset, min = matrix.data[index_min];
+    int min_index = matrix.offset, min = matrix.data[min_index];
 
-    for (int i=matrix.offset+1; i < matrix.n_cols*matrix.n_rows; i++){
-        if (matrix.data[i] < min){
-            min = matrix.data[i];
-            index_min = i;
-        }
-    }
+    for (int row_index = 0; row_index < matrix.n_rows; row_index++)
+        for (int col_index = 0; col_index < matrix.n_cols; col_index++)
+            if (matrix.data[matrix.offset + row_index*matrix.stride_rows + col_index*matrix.stride_cols] < min){
+                min = matrix.data[matrix.offset + row_index*matrix.stride_rows + col_index*matrix.stride_cols];
+                min_index = matrix.offset + row_index*matrix.stride_rows + col_index*matrix.stride_cols;
+            }
 
-    return index_min;
+    return min_index;
 }
 
 /*
@@ -245,16 +246,16 @@ int argmin(Matrix matrix){
     (O indice do elemento no array unidimencional que armazena os dados da matriz).
 */
 int argmax(Matrix matrix){
-    int index_max = matrix.offset, max = matrix.data[index_max];
+    int max_index = matrix.offset, max = matrix.data[max_index];
 
-    for (int i = matrix.offset+1; i < matrix.n_cols*matrix.n_rows; i++){
-        if (matrix.data[i] > max){
-            max = matrix.data[i];
-            index_max = i;
-        }
-    }
+    for (int row_index = 0; row_index < matrix.n_rows; row_index++)
+        for (int col_index = 0; col_index < matrix.n_cols; col_index++)
+            if (matrix.data[matrix.offset + row_index*matrix.stride_rows + col_index*matrix.stride_cols] > max){
+                max = matrix.data[matrix.offset + row_index*matrix.stride_rows + col_index*matrix.stride_cols];
+                max_index = matrix.offset + row_index*matrix.stride_rows + col_index*matrix.stride_cols;
+            }
 
-    return index_max;
+    return max_index;
 }
 
 //>================== operacoes aritmeticas: ===================

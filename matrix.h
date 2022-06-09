@@ -15,6 +15,14 @@ Maria Raquel Martinez | 20200025900
 
 //>==================== Definicao da Struct: ===================
 
+/* Campos da struck Matrix:
+   -> data: array unidimensional que armazena seus dados.
+   -> n_rows: numero de linhas.
+   -> n_cols: numero de colunas.
+   -> stride_rows: numero de elementos "pulados” no array unidimensional para acessar a próxima linha.
+   -> stride_cols: numero de elementos "pulados” no array unidimensional para acessar a próxima coluna.
+   -> offset: índice de onde devemos começar a considerar os dados do array unidimensional.
+*/
 typedef struct {
     int *data;
     int n_rows;

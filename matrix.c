@@ -82,11 +82,6 @@ Matrix i_matrix(int n){
 Matrix tile_matrix(Matrix matrix, int reps){
     int *data = malloc(matrix.n_cols*matrix.n_rows*sizeof(int)*reps), new_matrix_index = 0;
 
-    // for (int l = 0; l < matrix.n_rows; l++)
-    //     for (int j = 0; j < reps; j++)
-    //         for (int original_matrix_index = 0 + l*matrix.stride_rows; original_matrix_index < matrix.stride_rows + l*matrix.stride_rows; original_matrix_index++)
-    //             *(data + new_matrix_index++) = matrix.data[original_matrix_index];
-
     for (int row_index = 0; row_index < matrix.n_rows; row_index++)
         for (int j = 0; j < reps; j++)    
             for (int col_index = 0; col_index < matrix.n_cols; col_index++)
@@ -104,19 +99,13 @@ Matrix tile_matrix(Matrix matrix, int reps){
     > ci: indice da coluna do elemento
 */
 int get_element(Matrix matrix, int ri, int ci){
-
-    if (ri >= matrix.n_rows || ci >= matrix.n_cols){
+    if (ri<0 || ci<0 || ri >= matrix.n_rows || ci >= matrix.n_cols){
         puts("in get_element: ");
         printf("Error: index [%d][%d] is out of bounds\n", ri, ci);
         exit(1);
     }
 
-    int i = matrix.offset;
-
-    for (int row=0; row<ri; i += matrix.stride_rows, row++){}
-    for (int col=0; col<ci; i += matrix.stride_cols, col++){}
-
-    return matrix.data[i];
+    return matrix.data[matrix.offset + ri*matrix.stride_rows + ci*matrix.stride_cols];
 }
 
 /*
@@ -195,7 +184,7 @@ Matrix slice(Matrix a_matrix, int rs, int re, int cs, int ce){
         exit(1);
     };
 
-    Matrix sliced = {a_matrix.data, re-rs, ce-cs, a_matrix.stride_rows, a_matrix.stride_cols, a_matrix.offset+rs*a_matrix.stride_rows + cs*a_matrix.stride_cols};
+    Matrix sliced = {a_matrix.data, re-rs, ce-cs, a_matrix.stride_rows, a_matrix.stride_cols, a_matrix.offset + rs*a_matrix.stride_rows + cs*a_matrix.stride_cols};
     return sliced;
 }
 

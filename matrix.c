@@ -184,6 +184,12 @@ Matrix reshape(Matrix matrix, int new_n_rows, int new_n_cols){
     > ce: indice da coluna final do recorte
 */
 Matrix slice(Matrix a_matrix, int rs, int re, int cs, int ce){
+    if (rs<0 || cs<0 || re > a_matrix.n_rows || ce > a_matrix.n_cols){
+        puts("in slice: ");
+        puts("Error: index is out of bounds");
+        exit(1);
+    };
+
     Matrix sliced = {a_matrix.data, re-rs, ce-cs, a_matrix.stride_rows, a_matrix.stride_cols, a_matrix.offset+rs*a_matrix.stride_rows + cs*a_matrix.stride_cols};
     return sliced;
 }

@@ -80,13 +80,18 @@ Matrix i_matrix(int n){
     > reps: quantidade de repetições
 */
 Matrix tile_matrix(Matrix matrix, int reps){
-    int *data = malloc(matrix.n_cols*matrix.n_rows*sizeof(int)*reps), k = 0;
+    int *data = malloc(matrix.n_cols*matrix.n_rows*sizeof(int)*reps), new_matrix_index = 0;
 
-    for (int l = 1; l < matrix.n_rows+1; l++)
-        for (int j = 0; j < reps; j++)
-            for (int i = 0 + (l-1)*matrix.stride_rows; i < matrix.stride_rows + (l-1)*matrix.stride_rows; i++)
-                *(data + k++) = matrix.data[i];
-        
+    // for (int l = 0; l < matrix.n_rows; l++)
+    //     for (int j = 0; j < reps; j++)
+    //         for (int original_matrix_index = 0 + l*matrix.stride_rows; original_matrix_index < matrix.stride_rows + l*matrix.stride_rows; original_matrix_index++)
+    //             *(data + new_matrix_index++) = matrix.data[original_matrix_index];
+
+    for (int row_index = 0; row_index < matrix.n_rows; row_index++)
+        for (int j = 0; j < reps; j++)    
+            for (int col_index = 0; col_index < matrix.n_cols; col_index++)
+                *(data+new_matrix_index++) = matrix.data[matrix.offset + row_index*matrix.stride_rows + col_index*matrix.stride_cols];        
+
     return create_matrix(data, matrix.n_rows, matrix.n_cols*reps);
 }
 

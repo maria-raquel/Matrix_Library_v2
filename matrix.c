@@ -143,6 +143,7 @@ void print_matrix(Matrix matrix){
             printf("%2d ", matrix.data[ELEM_INDEX]);
     printf(")\n");
     }
+    putchar('\n');
 }
 
 //>================= manipulacao de dimensoes: =================

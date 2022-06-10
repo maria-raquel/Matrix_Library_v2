@@ -7,12 +7,20 @@ Igor Malheiros
 Alunos:
 Joao Antonio Honorato | 20210026680
 Maria Raquel Martinez | 20200025900
-
 */
 
 #include "matrix.h"
 #include <stdlib.h>
 #include <stdio.h>
+
+/* Em algumas funcoes, precisaremos determinar o indice de um elemento no array unidimensional da matriz. 
+   Para isso, usaremos os indices da linha e coluna do elemento, bem como o offset, o stride rows e o 
+   stride cols da matriz, seguindo a seguinte formula:
+        elem_index = offset + row_index*stride_rows + col_index*matrix.stride_cols
+*/
+#define ELEM_INDEX matrix.offset + row_index*matrix.stride_rows + col_index*matrix.stride_cols
+#define ELEM_1_INDEX matrix_1.offset + row_index*matrix_1.stride_rows + col_index*matrix_1.stride_cols
+#define ELEM_2_INDEX matrix_2.offset + row_index*matrix_2.stride_rows + col_index*matrix_2.stride_cols
 
 //>================ Implementacoes de Funcoes: =================
 
@@ -80,13 +88,13 @@ Matrix i_matrix(int n){
     > reps: quantidade de repetições
 */
 Matrix tile_matrix(Matrix matrix, int reps){
-    int *data = malloc(matrix.n_cols*matrix.n_rows*sizeof(int)*reps), new_matrix_index = 0;
+    int *data = malloc(matrix.n_cols*matrix.n_rows*sizeof(int)*reps), matrix_index, tile_matrix_index = 0;
 
     for (int row_index = 0; row_index < matrix.n_rows; row_index++)
         for (int j = 0; j < reps; j++)    
             for (int col_index = 0; col_index < matrix.n_cols; col_index++)
-                *(data+new_matrix_index++) = matrix.data[matrix.offset + row_index*matrix.stride_rows + col_index*matrix.stride_cols];        
-
+                *(data+tile_matrix_index++) = matrix.data[ELEM_INDEX];        
+            
     return create_matrix(data, matrix.n_rows, matrix.n_cols*reps);
 }
 
@@ -132,7 +140,7 @@ void print_matrix(Matrix matrix){
     for (int row_index = 0; row_index < matrix.n_rows; row_index++){
         printf("( ");
         for (int col_index = 0; col_index < matrix.n_cols; col_index++)
-            printf("%2d ", matrix.data[matrix.offset + row_index*matrix.stride_rows + col_index*matrix.stride_cols]);
+            printf("%2d ", matrix.data[ELEM_INDEX]);
     printf(")\n");
     }
 }
@@ -164,7 +172,7 @@ Matrix reshape(Matrix matrix, int new_n_rows, int new_n_cols){
 
     for (int row_index = 0, i = 0; row_index < matrix.n_rows; row_index++)
         for (int col_index = 0; col_index < matrix.n_cols; col_index++)
-            *(data+i++) = matrix.data[matrix.offset + row_index*matrix.stride_rows + col_index*matrix.stride_cols];
+            *(data+i++) = matrix.data[ELEM_INDEX];
 
     return create_matrix(data, new_n_rows, new_n_cols);
 }
@@ -181,7 +189,7 @@ Matrix slice(Matrix a_matrix, int rs, int re, int cs, int ce){
         puts("in slice: ");
         puts("Error: index is out of bounds");
         exit(1);
-    };
+    }
 
     Matrix sliced = {a_matrix.data, re-rs, ce-cs, a_matrix.stride_rows, a_matrix.stride_cols, a_matrix.offset + rs*a_matrix.stride_rows + cs*a_matrix.stride_cols};
     return sliced;
@@ -197,8 +205,8 @@ int min(Matrix matrix){
 
     for (int row_index = 0; row_index < matrix.n_rows; row_index++)
         for (int col_index = 0; col_index < matrix.n_cols; col_index++)
-            if (matrix.data[matrix.offset + row_index*matrix.stride_rows + col_index*matrix.stride_cols] < min)
-                min = matrix.data[matrix.offset + row_index*matrix.stride_rows + col_index*matrix.stride_cols];
+            if (matrix.data[ELEM_INDEX] < min)
+                min = matrix.data[ELEM_INDEX];
 
     return min;
 }
@@ -211,8 +219,8 @@ int max(Matrix matrix){
 
     for (int row_index = 0; row_index < matrix.n_rows; row_index++)
         for (int col_index = 0; col_index < matrix.n_cols; col_index++)
-            if (matrix.data[matrix.offset + row_index*matrix.stride_rows + col_index*matrix.stride_cols] > max)
-                max = matrix.data[matrix.offset + row_index*matrix.stride_rows + col_index*matrix.stride_cols];
+            if (matrix.data[ELEM_INDEX] > max)
+                max = matrix.data[ELEM_INDEX];
 
     return max;
 }
@@ -226,9 +234,9 @@ int argmin(Matrix matrix){
 
     for (int row_index = 0; row_index < matrix.n_rows; row_index++)
         for (int col_index = 0; col_index < matrix.n_cols; col_index++)
-            if (matrix.data[matrix.offset + row_index*matrix.stride_rows + col_index*matrix.stride_cols] < min){
-                min = matrix.data[matrix.offset + row_index*matrix.stride_rows + col_index*matrix.stride_cols];
-                min_index = matrix.offset + row_index*matrix.stride_rows + col_index*matrix.stride_cols;
+            if (matrix.data[ELEM_INDEX] < min){
+                min = matrix.data[ELEM_INDEX];
+                min_index = ELEM_INDEX;
             }
 
     return min_index;
@@ -243,9 +251,9 @@ int argmax(Matrix matrix){
 
     for (int row_index = 0; row_index < matrix.n_rows; row_index++)
         for (int col_index = 0; col_index < matrix.n_cols; col_index++)
-            if (matrix.data[matrix.offset + row_index*matrix.stride_rows + col_index*matrix.stride_cols] > max){
-                max = matrix.data[matrix.offset + row_index*matrix.stride_rows + col_index*matrix.stride_cols];
-                max_index = matrix.offset + row_index*matrix.stride_rows + col_index*matrix.stride_cols;
+            if (matrix.data[ELEM_INDEX] > max){
+                max = matrix.data[ELEM_INDEX];
+                max_index = ELEM_INDEX;
             }
 
     return max_index;
@@ -267,7 +275,7 @@ Matrix add(Matrix matrix_1, Matrix matrix_2){
 
     for (int row_index = 0; row_index < matrix_1.n_rows; row_index++)
         for (int col_index = 0; col_index < matrix_1.n_cols; col_index++)
-            *(data+i++) = matrix_1.data[matrix_1.offset + row_index*matrix_1.stride_rows + col_index*matrix_1.stride_cols] + matrix_2.data[matrix_2.offset + row_index*matrix_2.stride_rows + col_index*matrix_2.stride_cols];
+            *(data+i++) = matrix_1.data[ELEM_1_INDEX] + matrix_2.data[ELEM_2_INDEX];
 
     return create_matrix(data, matrix_1.n_rows, matrix_1.n_cols);;
 }
@@ -288,7 +296,7 @@ Matrix sub(Matrix matrix_1, Matrix matrix_2){
 
     for (int row_index = 0; row_index < matrix_1.n_rows; row_index++)
         for (int col_index = 0; col_index < matrix_1.n_cols; col_index++)
-            *(data+i++) = matrix_1.data[matrix_1.offset + row_index*matrix_1.stride_rows + col_index*matrix_1.stride_cols] - matrix_2.data[matrix_2.offset + row_index*matrix_2.stride_rows + col_index*matrix_2.stride_cols];
+            *(data+i++) = matrix_1.data[ELEM_1_INDEX] - matrix_2.data[ELEM_2_INDEX];
 
     return create_matrix(data, matrix_1.n_rows, matrix_1.n_cols);
 }
@@ -318,7 +326,7 @@ Matrix division(Matrix matrix_1, Matrix matrix_2){
 
     for (int row_index = 0; row_index < matrix_1.n_rows; row_index++)
         for (int col_index = 0; col_index < matrix_1.n_cols; col_index++)
-            *(data+i++) = matrix_1.data[matrix_1.offset + row_index*matrix_1.stride_rows + col_index*matrix_1.stride_cols] / matrix_2.data[matrix_2.offset + row_index*matrix_2.stride_rows + col_index*matrix_2.stride_cols];
+            *(data+i++) = matrix_1.data[ELEM_1_INDEX] / matrix_2.data[ELEM_2_INDEX];
 
 
     return create_matrix(data, matrix_1.n_rows, matrix_1.n_cols);
@@ -338,7 +346,7 @@ Matrix mul(Matrix matrix_1, Matrix matrix_2){
 
     for (int row_index = 0; row_index < matrix_1.n_rows; row_index++)
         for (int col_index = 0; col_index < matrix_1.n_cols; col_index++)
-            *(data+i++) = matrix_1.data[matrix_1.offset + row_index*matrix_1.stride_rows + col_index*matrix_1.stride_cols] * matrix_2.data[matrix_2.offset + row_index*matrix_2.stride_rows + col_index*matrix_2.stride_cols];
+            *(data+i++) = matrix_1.data[ELEM_1_INDEX] * matrix_2.data[ELEM_2_INDEX];
 
     return create_matrix(data, matrix_1.n_rows, matrix_1.n_cols);
 }

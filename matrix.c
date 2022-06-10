@@ -156,12 +156,17 @@ Matrix transpose(Matrix matrix){
 Matrix reshape(Matrix matrix, int new_n_rows, int new_n_cols){
    if (matrix.n_cols*matrix.n_rows != new_n_rows*new_n_cols){
         puts("in reshape: ");
-        printf("Error: cannot reshape matrix of size %d into shape (%d, %d)\n", matrix.n_cols*matrix.n_rows, new_n_rows, new_n_cols);
+        printf("Error: cannot reshape matrix of shape (%d, %d) into shape (%d, %d)\n", matrix.n_rows, matrix.n_cols, new_n_rows, new_n_cols);
         exit(1);
     }
- 
-    Matrix reshaped = {matrix.data, new_n_rows, new_n_cols, new_n_cols, matrix.stride_cols, matrix.offset};
-    return reshaped;
+    
+    int *data = malloc(new_n_rows*new_n_cols*sizeof(int));
+
+    for (int row_index = 0, i = 0; row_index < matrix.n_rows; row_index++)
+        for (int col_index = 0; col_index < matrix.n_cols; col_index++)
+            *(data+i++) = matrix.data[matrix.offset + row_index*matrix.stride_rows + col_index*matrix.stride_cols];
+
+    return create_matrix(data, new_n_rows, new_n_cols);
 }
 
 /*

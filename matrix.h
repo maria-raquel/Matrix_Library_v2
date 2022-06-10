@@ -7,7 +7,6 @@ Igor Malheiros
 Alunos:
 Joao Antonio Honorato | 20210026680
 Maria Raquel Martinez | 20200025900
-
 */
 
 #ifndef MATRIX_H
